@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import ModelDetail from './pages/ModelDetail';
 import { AccountInfo } from "./components/AccountInfo";
 import "./App.css";
+import MerkleTradePage from "./pages/merkle-trade";
+import OldTrade from "./components/Trading";
 
 const wallets = [new PetraWallet(), new MartianWallet()];
 
@@ -22,6 +24,8 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/model/:id" element={<ModelDetail />} />
               <Route path="/account" element={<AccountInfo />} />
+              <Route path="/test-merkle" element={<MerkleTradePage />} />
+              <Route path="/old-trade" element={<OldTrade />} />
             </Routes>
           </main>
         </div>
