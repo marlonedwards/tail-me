@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WalletConnector } from "./components/WalletConnector";
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
-import ModelDetail from './pages/ModelDetail.tsx';
+import ModelDetail from './pages/ModelDetail';
 import { AccountInfo } from "./components/AccountInfo";
 import "./App.css";
 
@@ -15,22 +15,16 @@ function App() {
   return (
     <AptosWalletAdapterProvider plugins={wallets} autoConnect={true}>
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div
-                className="App"
-                style={{ padding: "20px", textAlign: "center" }}
-              >
-                <h1 style={{ color: "#333" }}>Aptos Wallet Connection</h1>
-                <WalletConnector />
-              </div>
-            }
-          />
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/account" element={<AccountInfo />} />
-        </Routes>
+        <div className="min-h-screen bg-gray-900">
+          <Navbar />
+          <main className="container mx-auto px-6 py-8">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/model/:id" element={<ModelDetail />} />
+              <Route path="/account" element={<AccountInfo />} />
+            </Routes>
+          </main>
+        </div>
       </BrowserRouter>
     </AptosWalletAdapterProvider>
   );

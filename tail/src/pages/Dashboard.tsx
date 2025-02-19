@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ModelCard from '../components/ModelCard';
 
 interface Model {
@@ -9,8 +9,7 @@ interface Model {
 }
 
 const Dashboard = () => {
-  // This would typically come from an API
-  const [models, setModels] = useState<Model[]>([
+  const [models] = useState<Model[]>([
     {
       id: '1',
       name: 'BTC Sentiment AI',
@@ -38,17 +37,18 @@ const Dashboard = () => {
   ]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Top Models</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold text-white mb-8">Top Models</h1>
+      <div className="flex flex-nowrap overflow-x-auto pb-6 gap-6 scrollbar-hide">
         {models.map((model) => (
-          <ModelCard
-            key={model.id}
-            id={model.id}
-            name={model.name}
-            performance24h={model.performance24h}
-            followers={model.followers}
-          />
+          <div key={model.id} className="flex-none w-80">
+            <ModelCard
+              id={model.id}
+              name={model.name}
+              performance24h={model.performance24h}
+              followers={model.followers}
+            />
+          </div>
         ))}
       </div>
     </div>
