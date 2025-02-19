@@ -3,6 +3,9 @@ import { PetraWallet } from "petra-plugin-wallet-adapter";
 import { MartianWallet } from "@martianwallet/aptos-wallet-adapter";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WalletConnector } from "./components/WalletConnector";
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import ModelDetail from './pages/ModelDetail.tsx';
 import { AccountInfo } from "./components/AccountInfo";
 import "./App.css";
 
@@ -25,6 +28,7 @@ function App() {
               </div>
             }
           />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/account" element={<AccountInfo />} />
         </Routes>
       </BrowserRouter>
