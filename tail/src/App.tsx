@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import ModelDetail from './pages/ModelDetail';
 import { AccountInfo } from "./components/AccountInfo";
+import Trading from './components/Trading';
 import "./App.css";
 
 const wallets = [new PetraWallet(), new MartianWallet()];
@@ -22,6 +23,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/model/:id" element={<ModelDetail />} />
               <Route path="/account" element={<AccountInfo />} />
+              <Route path="/trading" element={<Trading />} />
             </Routes>
           </main>
         </div>

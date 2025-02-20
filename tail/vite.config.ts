@@ -13,5 +13,14 @@ export default defineConfig({
   // Specify the entry point
   optimizeDeps: {
     entries: ["./src/App.tsx"],
+    include: ['buffer'],
+  },
+  define: {
+    global: 'globalThis',
+  },
+  resolve: {
+    alias: {
+      buffer: 'buffer',
+    },
   },
 });
