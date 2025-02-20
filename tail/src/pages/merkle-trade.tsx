@@ -27,7 +27,7 @@ export default function TradingPage() {
       const aptos = new Aptos(merkle.config.aptosConfig);
 
       // initialize account
-      const PRIVATE_KEY = "0x6245c5161613e928faa75d2caec03eaeebc7965399da39c62caba6cadb60132d";
+      const PRIVATE_KEY = "APTOS-PRIVATE-KEY";
 
       const account = Account.fromPrivateKey({
         privateKey: new Ed25519PrivateKey(
