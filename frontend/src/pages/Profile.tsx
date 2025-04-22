@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useWallet } from '@/context/WalletContext';
 import { useToast } from '@/hooks/use-toast';
 import { Check, X, Edit, Copy, ExternalLink } from 'lucide-react';
+import { following_cache_key, Trader } from '@/utils/consts';
 
 // Mock data for followed traders
 const followedTraders = [
@@ -47,11 +48,32 @@ const Profile = () => {
   const { isConnected, walletAddress, walletBalance, disconnectWallet } = useWallet();
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
+  const [following, setFollowing] = useState<{ [id: string]: Trader }>({} as { [id: string]: Trader });
+
+
   const [profile, setProfile] = useState({
     username: 'AptosTradingFan',
     bio: 'Passionate about blockchain technology and copy trading on Aptos.',
     avatar: ''
   });
+
+  useEffect(()=>{
+    if (isConnected) {
+      const user = localStorage.getItem(following_cache_key);
+      if(!user){
+        localStorage.setItem(following_cache_key, JSON.stringify({
+          id: walletAddress,
+          address: walletAddress,
+          following: []
+        }));
+        
+      }else{
+        setFollowing(JSON.parse(user).following);
+      }
+    }
+  },[])
+
+
   
   const handleCopyAddress = () => {
     if (walletAddress) {

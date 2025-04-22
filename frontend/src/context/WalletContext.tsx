@@ -106,27 +106,64 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
 
         const walletName = walletNameMap[type];
 
-        // Find the wallet by name
-        const selectedWallet = wallets.find(
+        // Debug output to console for available wallets
+        console.log("Available wallets:", wallets.map(w => ({ 
+          name: w.name, 
+          readyState: w.readyState,
+          readyStateText: WalletReadyState[w.readyState]
+        })));
+
+        // Check if any wallets are available at all
+        if (wallets.length === 0) {
+          throw new Error("No wallets detected. Please make sure you have wallet extensions installed.");
+        }
+
+        // Try to find the wallet
+        let selectedWallet = wallets.find(
           (wallet) =>
             wallet.name === walletName &&
             wallet.readyState === WalletReadyState.Installed
         );
 
+        // If not found by exact name, try partial matching (some wallets may have different naming)
         if (!selectedWallet) {
-          throw new Error(
-            `${type} wallet not installed or not detected. Please install the wallet and refresh the page.`
+          selectedWallet = wallets.find(
+            (wallet) =>
+              wallet.name.toLowerCase().includes(walletName.toLowerCase()) &&
+              wallet.readyState === WalletReadyState.Installed
           );
         }
 
-        await connect(walletName);
+        // If still not found, check if any version of this wallet is available but not ready
+        if (!selectedWallet) {
+          const notReadyWallet = wallets.find(
+            (wallet) => wallet.name.toLowerCase().includes(walletName.toLowerCase())
+          );
+
+          if (notReadyWallet) {
+            // The wallet exists but isn't ready
+            const readyStateText = WalletReadyState[notReadyWallet.readyState];
+            throw new Error(
+              `${type} wallet was found but is not ready (state: ${readyStateText}). Please unlock or reload your wallet.`
+            );
+          } else {
+            throw new Error(
+              `${type} wallet not detected. Please install the wallet extension and refresh the page.`
+            );
+          }
+        }
+
+        // Try connecting with the adapter name now
+        console.log(`Attempting to connect to ${selectedWallet.name}...`);
+        await connect(selectedWallet.name);
 
         toast({
           title: "Wallet Connected",
-          description: `Successfully connected to ${type} wallet`,
+          description: `Successfully connected to ${selectedWallet.name} wallet`,
         });
       } catch (error) {
         console.error("Failed to connect wallet:", error);
+        setWalletType(null); // Reset wallet type on failure
         toast({
           title: "Connection Failed",
           description:
